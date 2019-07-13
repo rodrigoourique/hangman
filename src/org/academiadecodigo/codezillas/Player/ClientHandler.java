@@ -15,11 +15,17 @@ public class ClientHandler implements Runnable {
     public ClientHandler(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
         input = new Scanner(clientSocket.getInputStream());
-        output = new PrintWriter(clientSocket.getOutputStream());
+        output = new PrintWriter(clientSocket.getOutputStream(), true);
+
     }
 
     @Override
     public void run() {
+        boolean isWordGuessed;
+        boolean playing = true;
+        int tries;
+        int score = 0;
+
 
     }
 
@@ -27,8 +33,12 @@ public class ClientHandler implements Runnable {
         return word;
     }
 
-    public boolean isWordCorrect() {
-
+    public boolean isWordCorrect(char[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == '_') {
+                return false;
+            }
+        }
         return false;
     }
 }
