@@ -20,6 +20,11 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
+        boolean isWordGuessed;
+        boolean playing = true;
+        int tries;
+        int score = 0;
+
         
     }
 
