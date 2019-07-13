@@ -15,20 +15,24 @@ public class ClientHandler implements Runnable {
     public ClientHandler(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
         input = new Scanner(clientSocket.getInputStream());
-
+        output = new PrintWriter(clientSocket.getOutputStream(), true);
     }
 
     @Override
     public void run() {
-
+        
     }
 
     public String getWord() {
         return word;
     }
 
-    public boolean isWordCorrect() {
-
+    public boolean isWordCorrect(char[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == '_') {
+                return false;
+            }
+        }
         return false;
     }
 }
