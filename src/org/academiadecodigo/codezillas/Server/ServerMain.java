@@ -24,7 +24,7 @@ public class ServerMain {
             Socket client = serverSocket.accept();
             System.out.println("Client with " + client.toString() + " accepted. \n");
             ClientHandler handler = new ClientHandler(client);
-            handler.start();
+            handler.run();
         }
 
     }

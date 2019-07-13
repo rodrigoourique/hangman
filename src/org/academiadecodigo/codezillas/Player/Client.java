@@ -4,16 +4,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.sql.SQLOutput;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Client implements Runnable {
 
     private final PrintWriter outPut;
     private final Scanner userEntry;
+    private final Scanner input;
 
     public Client(Socket socket) throws IOException {
         this.userEntry = new Scanner(System.in);
         outPut = new PrintWriter(socket.getOutputStream(), true);
+        input = new Scanner(socket.getInputStream());
     }
 
 
@@ -29,9 +33,16 @@ public class Client implements Runnable {
                 System.out.println("\nClosing connection...");
                 System.exit(0);
             }
+            try {
+                System.out.println(input.nextLine());
+            } catch (NoSuchElementException ex) {
+                System.out.println("Connection closed");
+                System.exit(0);
+            }
         }
     }
-    public class InitSocket {
+
+    public static class InitSocket {
         private Scanner write = new Scanner(System.in);
         private Socket socket;
         private final int PORT = 8080;
