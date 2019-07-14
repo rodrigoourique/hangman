@@ -18,7 +18,7 @@ public class Game {
         FileReader fr;
         ArrayList<String> words = new ArrayList<>();
 
-        fr = new FileReader("/Users/codecadet/Desktop/Hangman/hangman/resources/words.txt");
+        fr = new FileReader("/Users/codecadet/Desktop/hangmanproject/hangman/resources/words.txt");
         br = new BufferedReader(fr);
         String word;
 
