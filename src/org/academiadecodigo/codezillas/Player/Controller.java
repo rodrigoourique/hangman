@@ -1,37 +1,44 @@
 package org.academiadecodigo.codezillas.Player;
 
+import org.academiadecodigo.codezillas.Server.ClientHandler;
+
 import java.io.IOException;
 import java.net.Socket;
 
 public class Controller {
-    private InitSocket init;
-    private ListenerThread inputThread;
-    private TalkThread outputThread;
+    private Client.InitSocket init;
+    private Client inputThread;
+    private Client outputThread;
     private Socket clientSocket;
 
-    public Controller() {
-        clientSocket = getSocket();
-        startComunication();
+
+    public Controller() throws IOException {
+        clientSocket = new Socket("localhost", 8080);
+        inputThread = new Client(clientSocket);
+        ClientHandler wtf = new ClientHandler(clientSocket);
+        inputThread.run();
+        wtf.run();
+
+        startCommunication();
         startListening();
     }
 
     Socket getSocket() throws IOException {
-        init = new InitSocket();
-        return init.getSocket();
+        return clientSocket;
+
+
     }
 
-    void startComunication() throws IOException {
-        outputThread = new TalkThread(clientSocket);
-        outputThread.start();
+    void startCommunication() throws IOException {
+        outputThread = new Client(clientSocket);
+        outputThread.run();
     }
 
     void startListening() throws IOException {
-        inputThread = new ListenerThread(clientSocket);
-        inputThread.start();
+        inputThread = new Client(clientSocket);
+        inputThread.run();
     }
 
-    @Override
-    public void run() {
-
-    }
 }
+
+
