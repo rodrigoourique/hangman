@@ -24,7 +24,6 @@ public class Game {
 
         while ((word = br.readLine()) != null) {
             words.add(word);
-            //System.out.println(word);
         }
         return words.get((int) (Math.random() * words.size()));
     }

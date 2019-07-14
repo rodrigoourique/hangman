@@ -13,18 +13,22 @@ public class ClientHandler implements Runnable {
     private Socket clientSocket;
     private Scanner inputScanner;
     private PrintWriter output;
+    private boolean isWordGuessed = false;
+    private PromptMenu promptMenu;
+    private int score = 0;
+
 
     public ClientHandler(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
         inputScanner = new Scanner(clientSocket.getInputStream());
         output = new PrintWriter(clientSocket.getOutputStream(), true);
+        this.promptMenu = new PromptMenu(clientSocket);
     }
 
     @Override
     public void run() {
 
         String word;
-        int score = 0;
         boolean playing = true;
         Game game = new Game();
 
@@ -44,29 +48,30 @@ public class ClientHandler implements Runnable {
                 playerGuess[i] = '_';
             }
 
-            boolean isWordGuessed = false;
             int tries = 0;
 
             output.println("\nWelcome to the Hangman game!\n");
+            promptMenu.askName();
             output.printf("Your total score is: %d\n\n", score);
             output.printf("The Word has %d letters.\n", totalTries);
             output.printf("Let's begin!\n");
 
-            while (!isWordGuessed && tries != totalTries) {
+            while (!isWordGuessed || tries != totalTries) {
 
                 output.print("\nWord: ");
                 printArray(playerGuess);
                 output.printf("\nYou have %d tries left.\n", totalTries);
+                System.out.println(word);
                 output.printf("Enter a letter or word. ('0' to quit)\n");
 
                 String guessedLetter = inputScanner.nextLine().toLowerCase();
-                totalTries--;
 
                 try {
                     char letter = guessedLetter.charAt(0);
 
-                    if (letter == '\u0000') {
+                    if (guessedLetter == null) {
                         output.println("\nYou must enter something.\n");
+                        return;
 
                     }
 
@@ -82,20 +87,53 @@ public class ClientHandler implements Runnable {
                         }
 
                     } else {
+                        boolean isLetterGuessed = false;
+
                         for (int i = 0; i < guessWord.length; i++) {
+
                             if (guessWord[i] == letter) {
                                 playerGuess[i] = letter;
+                                isLetterGuessed = true;
                             }
                         }
+                        if (!isLetterGuessed) {
+                            totalTries--;
+                        }
+                        if (isWordGuessed) {
+                            win();
+                        }
                     }
+
 
                 } catch (java.lang.StringIndexOutOfBoundsException e) {
                     output.println("\nYou must enter something.\n");
                 }
+
                 if (isWordGuessed(playerGuess) || word.equals(guessedLetter)) {
-                    isWordGuessed = true;
-                    output.println("Congratulations! You won!");
-                    score++;
+                    win();
+                    output.println("Do you want to play another game? (yes/no)");
+
+                        try {
+                            String temp = inputScanner.nextLine();
+                            if (temp.equals("no") || temp.equals("0")) {
+                                playing = false;
+                                isWordGuessed = true;
+                                System.out.println("Client with " + clientSocket.toString() + " ended the connection.");
+
+                                try {
+                                    clientSocket.close();
+
+                                } catch (IOException e) {
+                                    System.out.println("Unable to disconnect!");
+                                }
+                            } else {
+                                run();
+                            }
+
+                        } catch (NoSuchElementException e) {
+                            System.out.println("Client with " + clientSocket.toString() + " ended the connection.\n");
+                        }
+
                 }
 
                 if (totalTries == 0) {
@@ -147,4 +185,11 @@ public class ClientHandler implements Runnable {
         }
         output.print("\n");
     }
+
+    public void win() {
+        isWordGuessed = true;
+        output.println("Congratulations! You won!");
+        score++;
+    }
 }
+

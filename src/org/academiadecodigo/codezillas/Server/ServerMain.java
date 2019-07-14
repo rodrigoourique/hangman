@@ -11,16 +11,14 @@ import java.util.concurrent.Executors;
 public class ServerMain {
 
     private static final int PORT = 8080;
-    private static ServerSocket serverSocket;
+    private static final int MAX_CLIENTS = 40;
 
-    //Is initiated on the given port and loops listening to clients
-    //to then send them to the ClientHandler
     public static void main(String[] args) throws IOException {
 
         System.out.println("Starting server!");
-        serverSocket = new ServerSocket(PORT);
+        ServerSocket serverSocket = new ServerSocket(PORT);
         System.out.println("\nServer Running!\n");
-        ExecutorService fixedPool = Executors.newFixedThreadPool(4);
+        ExecutorService fixedPool = Executors.newFixedThreadPool(MAX_CLIENTS);
 
         Game game = new Game();
         game.gameStart(game.readFile());
