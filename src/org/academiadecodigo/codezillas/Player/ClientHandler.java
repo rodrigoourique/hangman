@@ -58,6 +58,7 @@ public class ClientHandler implements Runnable {
                 printArray(playerGuess);
                 output.printf("\nYou have %d tries left.\n", totalTries);
                 output.printf("Enter a letter or word. ('0' to quit)\n");
+
                 String guessedLetter = inputScanner.nextLine().toLowerCase();
                 totalTries--;
 
