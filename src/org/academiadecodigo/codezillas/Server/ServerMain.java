@@ -1,7 +1,5 @@
 package org.academiadecodigo.codezillas.Server;
 
-import org.academiadecodigo.codezillas.Player.ClientHandler;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,7 +7,7 @@ import java.net.Socket;
 public class ServerMain {
 
     private static ServerSocket serverSocket;
-    private static final int PORT = 1337;
+    private static final int PORT = 8080;
 
     //Is initiated on the given port and loops listening to clients
     //to then send them to the ClientHandler
@@ -18,6 +16,9 @@ public class ServerMain {
         System.out.println("Starting server!");
         serverSocket = new ServerSocket(PORT);
         System.out.println("\nServer Running!\n");
+
+        Game game = new Game();
+        game.gameStart(game.readFile());
 
         while (true) {
 

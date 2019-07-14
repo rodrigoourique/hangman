@@ -1,5 +1,7 @@
 package org.academiadecodigo.codezillas.Player;
 
+import org.academiadecodigo.codezillas.Server.ClientHandler;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -11,17 +13,23 @@ public class Controller {
 
 
     public Controller() throws IOException {
-        clientSocket = getSocket();
-        startComunication();
+        clientSocket = new Socket("localhost", 8080);
+        inputThread = new Client(clientSocket);
+        ClientHandler wtf = new ClientHandler(clientSocket);
+        inputThread.run();
+        wtf.run();
+
+        startCommunication();
         startListening();
     }
 
     Socket getSocket() throws IOException {
-        init = new Client.InitSocket();
-        return init.getSocket();
+        return clientSocket;
+
+
     }
 
-    void startComunication() throws IOException {
+    void startCommunication() throws IOException {
         outputThread = new Client(clientSocket);
         outputThread.run();
     }

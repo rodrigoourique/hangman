@@ -2,9 +2,7 @@ package org.academiadecodigo.codezillas.Player;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.sql.SQLOutput;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -29,7 +27,7 @@ public class Client implements Runnable {
             message = userEntry.nextLine();
             outPut.println(message);
 
-            if (!(message.equals("-") || message.equals("no"))) {
+            if ((message.equals("-") || message.equals("no"))) {
                 System.out.println("\nClosing connection...");
                 System.exit(0);
             }
@@ -45,18 +43,19 @@ public class Client implements Runnable {
     public static class InitSocket {
         private Scanner write = new Scanner(System.in);
         private Socket socket;
-        private final int PORT = 8080;
         private String HOST;
+        private final int PORT = 8080;
 
-        public InitSocket() throws IOException{
+        public void initSocket() throws IOException{
             System.out.println("Hey! Before you start, please enter your IP Address! (If you are a localhost, press Enter.)");
-            Scanner host = new Scanner(System.in);
-            HOST = host.nextLine();
+           // Scanner host = new Scanner(System.in);
+           /* HOST = host.nextLine();
 
             if(HOST == null){
                 HOST = InetAddress.getLocalHost().toString();
-            }
-            socket = new Socket(HOST, PORT);
+            }  */
+            socket = new Socket(HOST, PORT); // TODO: ver verificaçao do HOST
+            //return socket;
         }
 
         public Socket getSocket() {
