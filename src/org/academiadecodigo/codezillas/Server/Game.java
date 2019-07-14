@@ -18,13 +18,13 @@ public class Game {
         FileReader fr;
         ArrayList<String> words = new ArrayList<>();
 
-        fr = new FileReader("/Users/codecadet/Desktop/hangmanproject/hangman/resources/words.txt");
+        fr = new FileReader("resources/wordslist");
         br = new BufferedReader(fr);
         String word;
 
         while ((word = br.readLine()) != null) {
             words.add(word);
-            System.out.println(word);
+            //System.out.println(word);
         }
         return words.get((int) (Math.random() * words.size()));
     }
