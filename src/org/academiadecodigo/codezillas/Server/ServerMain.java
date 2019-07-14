@@ -1,8 +1,12 @@
 package org.academiadecodigo.codezillas.Server;
 
+import org.academiadecodigo.codezillas.Player.ClientHandler;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ServerMain {
 
@@ -16,6 +20,7 @@ public class ServerMain {
         System.out.println("Starting server!");
         serverSocket = new ServerSocket(PORT);
         System.out.println("\nServer Running!\n");
+        ExecutorService fixedPool = Executors.newFixedThreadPool(4);
 
         Game game = new Game();
         game.gameStart(game.readFile());
@@ -25,7 +30,7 @@ public class ServerMain {
             Socket client = serverSocket.accept();
             System.out.println("Client with " + client.toString() + " accepted. \n");
             ClientHandler handler = new ClientHandler(client);
-            handler.run();
+            fixedPool.submit(handler);
         }
     }
 }
