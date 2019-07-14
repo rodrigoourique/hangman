@@ -1,8 +1,5 @@
 package org.academiadecodigo.codezillas.Server;
 
-import org.academiadecodigo.bootcamp.Prompt;
-import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;

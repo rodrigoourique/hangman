@@ -8,5 +8,7 @@ public class ClientMain {
         Controller controller = new Controller();
         controller.getSocket();
         controller.startCommunication();
+
+        
     }
 }
