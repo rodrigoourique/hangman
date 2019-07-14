@@ -15,7 +15,6 @@ public class ClientHandler implements Runnable {
     private PrintWriter output;
     private boolean isWordGuessed = false;
     private PromptMenu promptMenu;
-    private int score = 0;
 
 
     public ClientHandler(Socket clientSocket) throws IOException {
@@ -52,7 +51,6 @@ public class ClientHandler implements Runnable {
 
             output.println("\nWelcome to the Hangman game!\n");
             promptMenu.askName();
-            output.printf("Your total score is: %d\n\n", score);
             output.printf("The Word has %d letters.\n", totalTries);
             output.printf("Let's begin!\n");
 
@@ -71,7 +69,6 @@ public class ClientHandler implements Runnable {
                     if (guessedLetter == null) {
                         output.println("\nYou must enter something.\n");
                         return;
-
                     }
 
                     if (letter == '0') {
@@ -97,9 +94,6 @@ public class ClientHandler implements Runnable {
                         }
                         if (!isLetterGuessed) {
                             totalTries--;
-                        }
-                        if (isWordGuessed) {
-                            win();
                         }
                     }
 
@@ -168,12 +162,12 @@ public class ClientHandler implements Runnable {
     }
 
     private boolean isWordGuessed(char[] playerGuess) {
+
         for (int i = 0; i < playerGuess.length; i++) {
             if (playerGuess[i] == '_') {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -188,7 +182,6 @@ public class ClientHandler implements Runnable {
     public void win() {
         isWordGuessed = true;
         output.println("Congratulations! You won!");
-        score++;
     }
 }
 
